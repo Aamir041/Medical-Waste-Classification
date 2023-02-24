@@ -1,5 +1,5 @@
 # Medical-Waste-Classification
-###Mini Project Repo
+### Mini Project Repo
 
 ## Team Members 
 - <a href="https://github.com/Aamir041">Aamir Saudagar - MITU20BTIT0001</a>
