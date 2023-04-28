@@ -76,9 +76,6 @@ function App() {
             const results = await model.classify(imageRef.current)
             setResults(results)
         }
-        else {
-            console.log("Lawde Image Upload Karna")
-        }
     }
     
     //handleOnChange is a function that takes an event object as an argument and sets 
@@ -115,15 +112,14 @@ function App() {
             <div className='inputHolder'>
                 <input type='file' accept='image/*' capture='camera' className='uploadInput' id='input-img' onChange={uploadImage} ref={fileInputRef} />
                 <button className='uploadImage' onClick={triggerUpload}>Upload Image</button>
-                <span className='or'>OR</span>
-                <input type="text" placeholder='Paster image URL' ref={textInputRef} onChange={handleOnChange} />
+                
             </div>
             <div className="mainWrapper">
                 <div className="mainContent">
                     <div className="imageHolder">
                         {imageURL && <img src={imageURL} alt="Upload Preview" crossOrigin="anonymous" ref={imageRef} />}
                     </div>
-                    {notImage == true && <div>Upload Image</div>}
+                    {notImage == true && <div className='error-message'>Pls Upload An Image</div>}
                     {notImage == false  && <div className='resultsHolder'>
                         {results.map((result, index) => {
                             return (
