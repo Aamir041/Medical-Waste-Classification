@@ -12,6 +12,7 @@ function App() {
     //results is an array that will hold the results of the image identification
     const [history, setHistory] = useState([])
     //history is an array that will hold the URLs of the recently uploaded images
+    const [notImage, setImgErr] = useState(false)
 
     const imageRef = useRef()
     //imageRef is a reference to the <img> tag that will display the uploaded image.
@@ -40,21 +41,44 @@ function App() {
     //the imageURL state to the URL of the uploaded image. If there are no uploaded files, it sets the imageURL state to null.
 
     const uploadImage = (e) => {
-        const { files } = e.target
-        if (files.length > 0) {
-            const url = URL.createObjectURL(files[0])
-            setImageURL(url)
-        } else {
-            setImageURL(null)
+        const fileExtension = ["png", "jpeg", "webp", "jpg", "svg"];
+        let notNice = true
+        for (let i = 0; i < fileExtension.length; i++) {
+            if (e.target.value.indexOf(fileExtension[i]) > -1) {
+                setImgErr(false)
+                notNice = false;
+                break;
+            }
         }
+        if (!notNice) {
+            const { files } = e.target
+            if (files.length > 0) {
+                const url = URL.createObjectURL(files[0])
+                setImageURL(url)
+            } else {
+                setImageURL(null)
+            }
+        }
+        else {
+            setImageURL(null)
+            setImgErr(true);
+        }
+
     }
+
     //identify is an asynchronous function that sets the results state to the results of 
     //the MobileNet model's classify() method called on the imageRef reference. It also sets the textInputRef value to an empty string.
 
     const identify = async () => {
-        textInputRef.current.value = ''
-        const results = await model.classify(imageRef.current)
-        setResults(results)
+        if (!notImage) {
+            textInputRef.current.value = ''
+            console.log(imageRef.current);
+            const results = await model.classify(imageRef.current)
+            setResults(results)
+        }
+        else {
+            console.log("Lawde Image Upload Karna")
+        }
     }
     
     //handleOnChange is a function that takes an event object as an argument and sets 
@@ -99,7 +123,8 @@ function App() {
                     <div className="imageHolder">
                         {imageURL && <img src={imageURL} alt="Upload Preview" crossOrigin="anonymous" ref={imageRef} />}
                     </div>
-                    {results.length > 0 && <div className='resultsHolder'>
+                    {notImage == true && <div>Upload Image</div>}
+                    {notImage == false  && <div className='resultsHolder'>
                         {results.map((result, index) => {
                             return (
                                 <div className='result' key={result.className}>
