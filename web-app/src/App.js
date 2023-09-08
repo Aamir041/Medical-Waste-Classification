@@ -40,7 +40,7 @@ function App() {
     //the imageURL state to the URL of the uploaded image. If there are no uploaded files, it sets the imageURL state to null.
 
     const uploadImage = (e) => {
-        const fileExtension = ["png", "jpeg", "webp", "jpg", "svg"];
+        const fileExtension = ["png", "jpeg", "webp", "jpg", "svg","avif"];
         let notNice = true
         for (let i = 0; i < fileExtension.length; i++) {
             if (e.target.value.indexOf(fileExtension[i]) > -1) {
@@ -71,8 +71,7 @@ function App() {
 
     const identify = async () => {
         if (!notImage) {
-            textInputRef.current.value = ''
-            console.log(imageRef.current);
+            
             const results = await model.classify(imageRef.current)
             setResults(results)
         }
